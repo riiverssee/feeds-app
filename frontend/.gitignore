@@ -1,0 +1,11 @@
+# Node
+node_modules/
+dist/
+dist-ssr/
+
+# Environment
+.env
+.env.local
+
+# VS Code
+.vscode/

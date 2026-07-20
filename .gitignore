@@ -1,0 +1,22 @@
+﻿# Python virtual environment
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Django
+*.log
+db.sqlite3
+media/
+
+# Environment variables
+.env
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# VS Code
+.vscode/
