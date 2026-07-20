@@ -1,0 +1,1 @@
+web: gunicorn fap.wsgi --log-file -
