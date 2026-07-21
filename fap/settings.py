@@ -31,6 +31,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',          # must be before CommonMiddleware
     'django.middleware.common.CommonMiddleware',
@@ -82,12 +83,25 @@ WSGI_APPLICATION = 'fap.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     "default": dj_database_url.config(
+#         default=config("DATABASE_URL")
+#     )
+# }
+
 DATABASES = {
     "default": dj_database_url.config(
-        default=config("DATABASE_URL")
+        default=f"postgresql://{config('DB_USER')}:{config('DB_PASSWORD')}@{config('DB_HOST')}:{config('DB_PORT')}/{config('DB_NAME')}",
+        conn_max_age=600,
     )
 }
 
+if config("DATABASE_URL", default=None):
+    DATABASES["default"] = dj_database_url.parse(
+        config("DATABASE_URL"),
+        conn_max_age=600,
+    )
+    
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -101,6 +115,8 @@ USE_I18N      = True
 USE_TZ        = True
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ── AUTH ────────────────────────────────
