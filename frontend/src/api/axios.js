@@ -32,16 +32,14 @@ API.interceptors.response.use(
                 if (!refresh) {
                     // no refresh token → logout
                     localStorage.clear()
-                    window.location.href = '/admin/login'
+                    window.location.href = '/login'
                     return Promise.reject(error)
                 }
 
                 // call refresh endpoint
-                const res = await axios.post(
-                    'http://127.0.0.1:8000/api/auth/token/refresh/',
-                    { refresh }
-                )
-
+                const res = await API.post("/auth/token/refresh/", {
+                    refresh,
+                })
                 const newAccessToken = res.data.access
 
                 // save new access token
