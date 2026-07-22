@@ -9,10 +9,16 @@ const AuthContext = createContext()
 export const AuthProvider = ({ children }) => {
 
     // user state — null means not logged in
-    const [user, setUser] = useState(
-        JSON.parse(localStorage.getItem('user')) || null
-        // if user was already logged in before → restore from localStorage
-    )
+    const storedUser = localStorage.getItem('user');
+
+    const [user, setUser] = useState(() => {
+        try {
+            return storedUser ? JSON.parse(storedUser) : null;
+        } catch (error) {
+            localStorage.removeItem('user');
+            return null;
+        }
+    });
 
     // called when user logs in
     const login = (userData, tokens) => {
@@ -34,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     const isAdmin = user?.role === 'admin'
 
     // check if logged in user is customer
-    const isUser =  user?.role === 'user'
+    const isUser = user?.role === 'user'
 
     return (
         // wrap children with context
