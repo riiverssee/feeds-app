@@ -27,51 +27,51 @@ def get_tokens_for_user(user):
 # 1. SIGNUP
 # ─────────────────────────────────────────
 
-# class SignUpView(APIView):
-#     permission_classes = [AllowAny]
-
-#     def post(self, request):
-#         serializer = SignupSerializer(data=request.data)
-
-#         if not serializer.is_valid():
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#         user = serializer.save()
-
-#         return Response({
-#           'message': 'Account created successfully.',
-#            'tokens': get_tokens_for_user(user),
-#             'user': {
-#                 'id':           user.id,
-#                 'username':     user.username,
-#                 'email':        user.email,
-#                 'phone_number': user.phone_number,
-#                 'role':         user.role,
-#             }
-#         }, status=status.HTTP_201_CREATED)
-
 class SignUpView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        try:
-            serializer = SignupSerializer(data=request.data)
+        serializer = SignupSerializer(data=request.data)
 
-            if not serializer.is_valid():
-                return Response(serializer.errors, status=400)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-            user = serializer.save()
+        user = serializer.save()
 
-            return Response({
-                "message": "Account created successfully.",
-                "tokens": get_tokens_for_user(user),
-            }, status=201)
+        return Response({
+          'message': 'Account created successfully.',
+           'tokens': get_tokens_for_user(user),
+            'user': {
+                'id':           user.id,
+                'username':     user.username,
+                'email':        user.email,
+                'phone_number': user.phone_number,
+                'role':         user.role,
+            }
+        }, status=status.HTTP_201_CREATED)
 
-        except Exception as e:
-            return Response({
-                "error": str(e),
-                "traceback": traceback.format_exc(),
-            }, status=500)
+# class SignUpView(APIView):
+#     permission_classes = [AllowAny]
+
+#     def post(self, request):
+#         try:
+#             serializer = SignupSerializer(data=request.data)
+
+#             if not serializer.is_valid():
+#                 return Response(serializer.errors, status=400)
+
+#             user = serializer.save()
+
+#             return Response({
+#                 "message": "Account created successfully.",
+#                 "tokens": get_tokens_for_user(user),
+#             }, status=201)
+
+#         except Exception as e:
+#             return Response({
+#                 "error": str(e),
+#                 "traceback": traceback.format_exc(),
+#             }, status=500)
 
 
 
